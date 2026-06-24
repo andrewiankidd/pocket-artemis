@@ -8,8 +8,9 @@
     "dev": "node src/love2d4me/scripts/dev.js",
     "setup": "node src/love2d4me/scripts/setup-love.js",
     "pack": "node src/love2d4me/scripts/pack-love.js",
-    "build": "npm run pack && love.js pocket-artemis.love Web -t \"Pocket Artemis\" -c && node src/love2d4me/scripts/patch-web.js",
-    "serve": "npx http-server Web -p 8080",
+    "build": "node src/love2d4me/scripts/build-web.js",
+    "build:dev": "node ../love2d4me/scripts/build-web.js .",
+    "serve": "npx http-server Web -p 8080 -c-1",
     "sprites": "node src/love2d4me/scripts/render-sprites.js src/game/sprites.json"
   },
   "dependencies": {
