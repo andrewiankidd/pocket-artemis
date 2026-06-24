@@ -42,7 +42,7 @@ jobs:
       - name: Download .love artifact
         uses: actions/download-artifact@v4
         with:
-          name: pocket-artemis-love
+          name: love-file
           path: downloads
 
       - name: Install wrangler
