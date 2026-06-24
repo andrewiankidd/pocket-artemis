@@ -50,10 +50,10 @@ local COL = {
 }
 
 local function spawn_treat()
-    local x = math.random(treat_w, game_w - treat_w * 2)
+    local tx = math.random(treat_w, game_w - treat_w * 2)
     local kind = math.random() < 0.2 and "star" or "treat"
     table.insert(treats, {
-        x = x, y = -treat_h,
+        x = tx, y = -treat_h,
         kind = kind,
         speed = treat_speed + math.random(-20, 30),
     })
@@ -115,16 +115,16 @@ function MiniGame.update(dt)
     local py = floor_y - player_h
     local i = 1
     while i <= #treats do
-        local t = treats[i]
-        t.y = t.y + t.speed * dt
+        local tr = treats[i]
+        tr.y = tr.y + tr.speed * dt
 
-        if t.y + treat_h >= py and t.y <= py + player_h
-            and t.x + treat_w >= player_x and t.x <= player_x + player_w then
-            local pts = t.kind == "star" and 3 or 1
+        if tr.y + treat_h >= py and tr.y <= py + player_h
+            and tr.x + treat_w >= player_x and tr.x <= player_x + player_w then
+            local pts = tr.kind == "star" and 3 or 1
             score = score + pts
             table.remove(treats, i)
             if sfx then sfx.play("catch") end
-        elseif t.y > game_h then
+        elseif tr.y > game_h then
             misses = misses + 1
             table.remove(treats, i)
             if sfx then sfx.play("miss") end
@@ -164,13 +164,13 @@ function MiniGame.draw()
         if t.kind == "star" then
             lg.setColor(COL.treat_star)
             local cx, cy = t.x + treat_w / 2, t.y + treat_h / 2
-            local r = treat_w * 0.6
+            local rad = treat_w * 0.6
             for a = 0, 4 do
                 local angle = a * math.pi * 2 / 5 - math.pi / 2
-                local x1 = cx + math.cos(angle) * r
-                local y1 = cy + math.sin(angle) * r
+                local x1 = cx + math.cos(angle) * rad
+                local y1 = cy + math.sin(angle) * rad
                 local angle2 = angle + math.pi * 2 / 5
-                local x2 = cx + math.cos(angle2) * r
+                local x2 = cx + math.cos(angle2) * rad
                 local y2 = cy + math.sin(angle2) * r
                 lg.polygon("fill", cx, cy, x1, y1, x2, y2)
             end

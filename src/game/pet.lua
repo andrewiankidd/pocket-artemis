@@ -136,37 +136,37 @@ local CRITICAL_INFO = {
 
 -- ── Layout (computed from game size in init) ──
 
-local L = {}
+local layout = {}
 
 local function compute_layout(w, h)
-    L.game_w = w
-    L.game_h = h
+    layout.game_w = w
+    layout.game_h = h
 
     -- Meter icons
-    L.meter_icon_w    = floor(w * 0.133)
-    L.meter_icon_h    = floor(h * 0.167)
-    L.meter_gap       = floor(w * 0.033)
-    L.meter_y         = floor(h * 0.017)
-    L.meter_inset     = 2
-    L.meter_font      = floor(h * 0.058)
+    layout.meter_icon_w    = floor(w * 0.133)
+    layout.meter_icon_h    = floor(h * 0.167)
+    layout.meter_gap       = floor(w * 0.033)
+    layout.meter_y         = floor(h * 0.017)
+    layout.meter_inset     = 2
+    layout.meter_font      = floor(h * 0.058)
 
     -- Mood label
-    L.mood_y          = L.meter_y + L.meter_icon_h + floor(h * 0.01)
-    L.mood_font       = floor(h * 0.042)
+    layout.mood_y          = layout.meter_y + layout.meter_icon_h + floor(h * 0.01)
+    layout.mood_font       = floor(h * 0.042)
 
     -- Dog
-    L.dog_cx          = floor(w / 2)
-    L.dog_cy          = floor(h * 0.45)
-    L.dog_scale       = h / 240
+    layout.dog_cx          = floor(w / 2)
+    layout.dog_cy          = floor(h * 0.45)
+    layout.dog_scale       = h / 240
 
     -- Thought bubble
-    L.thought_font    = floor(h * 0.042)
-    L.thought_pad_x   = floor(w * 0.025)
-    L.thought_pad_y   = floor(h * 0.017)
-    L.thought_offset  = floor(h * 0.21)
-    L.thought_corner  = floor(h * 0.033)
-    L.thought_dot1_r  = floor(h * 0.017)
-    L.thought_dot2_r  = floor(h * 0.013)
+    layout.thought_font    = floor(h * 0.042)
+    layout.thought_pad_x   = floor(w * 0.025)
+    layout.thought_pad_y   = floor(h * 0.017)
+    layout.thought_offset  = floor(h * 0.21)
+    layout.thought_corner  = floor(h * 0.033)
+    layout.thought_dot1_r  = floor(h * 0.017)
+    layout.thought_dot2_r  = floor(h * 0.013)
 
 end
 
@@ -221,10 +221,10 @@ end
 
 local function pick_idle_anim()
     if idle_total_weight <= 0 or #idle_pool == 0 then return nil, nil end
-    local r = math.random() * idle_total_weight
+    local roll = math.random() * idle_total_weight
     for _, entry in ipairs(idle_pool) do
-        r = r - entry.weight
-        if r <= 0 then return entry.key, entry.duration end
+        roll = roll - entry.weight
+        if roll <= 0 then return entry.key, entry.duration end
     end
     local last = idle_pool[#idle_pool]
     return last.key, last.duration
@@ -267,8 +267,8 @@ local function get_critical()
 end
 
 local function get_refusal()
-    local c = get_critical()
-    return c and c.refusal or nil
+    local crit = get_critical()
+    return crit and crit.refusal or nil
 end
 
 local minigame_active = false
@@ -285,7 +285,7 @@ end
 
 local function start_minigame()
     minigame_active = true
-    MiniGame.start(L.game_w, L.game_h, SFX, function(score)
+    MiniGame.start(layout.game_w, layout.game_h, SFX, function(score)
         finish_minigame(score)
     end)
 end
@@ -355,53 +355,53 @@ end
 
 local function draw_meters()
     local count = #METER_DISPLAY
-    local total_w = count * L.meter_icon_w + (count - 1) * L.meter_gap
-    local start_x = (L.game_w - total_w) / 2
+    local total_w = count * layout.meter_icon_w + (count - 1) * layout.meter_gap
+    local start_x = (layout.game_w - total_w) / 2
 
     for i, m in ipairs(METER_DISPLAY) do
-        local x = start_x + (i - 1) * (L.meter_icon_w + L.meter_gap)
-        local y = L.meter_y
+        local mx = start_x + (i - 1) * (layout.meter_icon_w + layout.meter_gap)
+        local my = layout.meter_y
         local fill = Stats.get_fill(m.key)
 
         lg.setColor(COL.meter_bg)
-        lg.rectangle("fill", x, y, L.meter_icon_w, L.meter_icon_h, 4, 4)
+        lg.rectangle("fill", mx, my, layout.meter_icon_w, layout.meter_icon_h, 4, 4)
 
-        local inner_h = L.meter_icon_h - L.meter_inset * 2
+        local inner_h = layout.meter_icon_h - layout.meter_inset * 2
         local fill_h = inner_h * fill
         lg.setColor(fill < METER_LOW_THRESHOLD and COL.meter_low or m.color)
         if fill_h > 0 then
             lg.rectangle("fill",
-                x + L.meter_inset,
-                y + L.meter_inset + inner_h - fill_h,
-                L.meter_icon_w - L.meter_inset * 2,
+                mx + layout.meter_inset,
+                my + layout.meter_inset + inner_h - fill_h,
+                layout.meter_icon_w - layout.meter_inset * 2,
                 fill_h)
         end
 
         lg.setColor(1, 1, 1, 0.9)
         if m.icon_img then
             local iw, ih = m.icon_img:getDimensions()
-            local pad = L.meter_inset * 2
-            local max_sz = math.min(L.meter_icon_w - pad, L.meter_icon_h - pad)
-            local s = max_sz / math.max(iw, ih)
-            lg.draw(m.icon_img, x + (L.meter_icon_w - iw * s) / 2, y + (L.meter_icon_h - ih * s) / 2, 0, s, s)
+            local pad = layout.meter_inset * 2
+            local max_sz = math.min(layout.meter_icon_w - pad, layout.meter_icon_h - pad)
+            local scale = max_sz / math.max(iw, ih)
+            lg.draw(m.icon_img, mx + (layout.meter_icon_w - iw * scale) / 2, my + (layout.meter_icon_h - ih * scale) / 2, 0, scale, scale)
         end
 
         lg.setColor(0, 0, 0, 0.15)
-        lg.rectangle("line", x, y, L.meter_icon_w, L.meter_icon_h, 4, 4)
+        lg.rectangle("line", mx, my, layout.meter_icon_w, layout.meter_icon_h, 4, 4)
     end
 end
 
 -- ── Drawing: mood ──
 
 local function draw_mood()
-    lg.setFont(Fonts.get(nil, L.mood_font))
+    lg.setFont(Fonts.get(nil, layout.mood_font))
     local crit = get_critical()
     if crit then
         lg.setColor(crit.color)
-        lg.printf(crit.label, 0, L.mood_y, L.game_w, "center")
+        lg.printf(crit.label, 0, layout.mood_y, layout.game_w, "center")
     else
         lg.setColor(COL[mood])
-        lg.printf(MOOD_LABEL[mood], 0, L.mood_y, L.game_w, "center")
+        lg.printf(MOOD_LABEL[mood], 0, layout.mood_y, layout.game_w, "center")
     end
 end
 
@@ -566,7 +566,7 @@ local function draw_artemis_sprite(cx, cy)
         end
     end
 
-    local max_h = L.game_h * 0.4
+    local max_h = layout.game_h * 0.4
     local scale = min(max_h / spr.frame_h, max_h / spr.frame_w)
     local draw_w = spr.frame_w * scale
     local draw_h = spr.frame_h * scale
@@ -581,21 +581,21 @@ end
 
 local function draw_thought_bubble(cx, cy, text)
     if not text or thought_timer <= 0 then return end
-    local font = Fonts.get(nil, L.thought_font)
+    local font = Fonts.get(nil, layout.thought_font)
     lg.setFont(font)
-    local tw = font:getWidth(text) + L.thought_pad_x * 2
-    local th = font:getHeight() + L.thought_pad_y * 2
+    local tw = font:getWidth(text) + layout.thought_pad_x * 2
+    local th = font:getHeight() + layout.thought_pad_y * 2
     local bx = cx - tw / 2
-    local by = cy - L.thought_offset
+    local by = cy - layout.thought_offset
     lg.setColor(COL.bubble_fill)
-    lg.rectangle("fill", bx, by, tw, th, L.thought_corner, L.thought_corner)
+    lg.rectangle("fill", bx, by, tw, th, layout.thought_corner, layout.thought_corner)
     lg.setColor(COL.bubble_border)
-    lg.rectangle("line", bx, by, tw, th, L.thought_corner, L.thought_corner)
+    lg.rectangle("line", bx, by, tw, th, layout.thought_corner, layout.thought_corner)
     lg.setColor(COL.bubble_fill)
-    lg.circle("fill", cx - 5, by + th + 4, L.thought_dot1_r)
-    lg.circle("fill", cx - 10, by + th + 12, L.thought_dot2_r)
+    lg.circle("fill", cx - 5, by + th + 4, layout.thought_dot1_r)
+    lg.circle("fill", cx - 10, by + th + 12, layout.thought_dot2_r)
     lg.setColor(COL.text)
-    lg.printf(text, bx, by + L.thought_pad_y, tw, "center")
+    lg.printf(text, bx, by + layout.thought_pad_y, tw, "center")
 end
 
 -- ── Public API ──
@@ -685,24 +685,23 @@ function Pet.init()
     reset_idle_timer()
 
     -- Register sounds
-    local S = SFX
-    S.generate("eat", 0.25, function(t, d) return S.square(200 + 100 * math.sin(t * 30), t) * S.fade(t, d) * 0.6 end)
-    S.generate("drink", 0.3, function(t, d) return S.sine(300 + 150 * math.sin(t * 20), t) * S.fade(t, d) * 0.5 end)
-    S.generate("play", 0.3, function(t, d) return S.square(400 + 200 * t / d, t) * S.fade(t, d) * 0.5 end)
-    S.generate("sleep", 0.5, function(t, d) return S.sine(150 + 30 * math.sin(t * 4), t) * S.fade(t, d) * 0.3 end)
-    S.generate("trick", 0.2, function(t, d) return S.square(500 + 300 * t / d, t) * S.fade(t, d) * 0.5 end)
-    S.generate("trick_big", 0.35, function(t, d) return S.square(400 + math.floor(t * 12) * 80, t) * S.fade(t, d) * 0.5 end)
-    S.generate("happy", 0.25, function(t, d) return S.square(600 + math.floor(t * 8) * 50, t) * S.fade(t, d) * 0.4 end)
-    S.generate("sad", 0.4, function(t, d) return S.sine(300 - 100 * t / d, t) * S.fade(t, d) * 0.3 end)
-    S.generate("catch", 0.12, function(t, d) return S.square(800 + 400 * t / d, t) * S.fade(t, d) * 0.5 end)
-    S.generate("miss", 0.2, function(t, d) return S.square(200 - 100 * t / d, t) * S.fade(t, d) * 0.4 end)
-    S.generate("game_start", 0.3, function(t, d) return S.square(300 + math.floor(t * 6) * 100, t) * S.fade(t, d) * 0.4 end)
-    S.generate("game_end", 0.5, function(t, d)
+    SFX.generate("eat", 0.25, function(t, d) return SFX.square(200 + 100 * math.sin(t * 30), t) * SFX.fade(t, d) * 0.6 end)
+    SFX.generate("drink", 0.3, function(t, d) return SFX.sine(300 + 150 * math.sin(t * 20), t) * SFX.fade(t, d) * 0.5 end)
+    SFX.generate("play", 0.3, function(t, d) return SFX.square(400 + 200 * t / d, t) * SFX.fade(t, d) * 0.5 end)
+    SFX.generate("sleep", 0.5, function(t, d) return SFX.sine(150 + 30 * math.sin(t * 4), t) * SFX.fade(t, d) * 0.3 end)
+    SFX.generate("trick", 0.2, function(t, d) return SFX.square(500 + 300 * t / d, t) * SFX.fade(t, d) * 0.5 end)
+    SFX.generate("trick_big", 0.35, function(t, d) return SFX.square(400 + math.floor(t * 12) * 80, t) * SFX.fade(t, d) * 0.5 end)
+    SFX.generate("happy", 0.25, function(t, d) return SFX.square(600 + math.floor(t * 8) * 50, t) * SFX.fade(t, d) * 0.4 end)
+    SFX.generate("sad", 0.4, function(t, d) return SFX.sine(300 - 100 * t / d, t) * SFX.fade(t, d) * 0.3 end)
+    SFX.generate("catch", 0.12, function(t, d) return SFX.square(800 + 400 * t / d, t) * SFX.fade(t, d) * 0.5 end)
+    SFX.generate("miss", 0.2, function(t, d) return SFX.square(200 - 100 * t / d, t) * SFX.fade(t, d) * 0.4 end)
+    SFX.generate("game_start", 0.3, function(t, d) return SFX.square(300 + math.floor(t * 6) * 100, t) * SFX.fade(t, d) * 0.4 end)
+    SFX.generate("game_end", 0.5, function(t, d)
         local notes = {523, 659, 784, 1047}
-        return S.square(notes[(math.floor(t * 8) % 4) + 1], t) * S.fade(t, d) * 0.4
+        return SFX.square(notes[(math.floor(t * 8) % 4) + 1], t) * SFX.fade(t, d) * 0.4
     end)
-    S.generate("navigate", 0.05, function(t, d) return S.square(800, t) * S.fade(t, d) * 0.2 end)
-    S.load("bark", "game/sounds/bark.wav", { volume = 0.5 })
+    SFX.generate("navigate", 0.05, function(t, d) return SFX.square(800, t) * SFX.fade(t, d) * 0.2 end)
+    SFX.load("bark", "game/sounds/bark.wav", { volume = 0.5 })
 end
 
 function Pet.update(dt)
@@ -813,14 +812,14 @@ function Pet.draw()
     end
 
     lg.setColor(COL.bg)
-    lg.rectangle("fill", 0, 0, L.game_w, L.game_h)
+    lg.rectangle("fill", 0, 0, layout.game_w, layout.game_h)
 
     draw_meters()
     draw_mood()
-    if not sprites_loaded or not draw_artemis_sprite(L.dog_cx, L.dog_cy) then
-        draw_artemis(L.dog_cx, L.dog_cy, L.dog_scale)
+    if not sprites_loaded or not draw_artemis_sprite(layout.dog_cx, layout.dog_cy) then
+        draw_artemis(layout.dog_cx, layout.dog_cy, layout.dog_scale)
     end
-    draw_thought_bubble(L.dog_cx, L.dog_cy - L.thought_offset * 0.4, thought_text)
+    draw_thought_bubble(layout.dog_cx, layout.dog_cy - layout.thought_offset * 0.4, thought_text)
     Toolbar.draw()
 
     lg.setColor(1, 1, 1)
