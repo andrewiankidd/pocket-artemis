@@ -16,6 +16,13 @@
         "landscape": "gba"
     },
     "fps_limit": 30,
+    "actions": {
+        "move_left":  { "keys": ["left", "a"] },
+        "move_right": { "keys": ["right", "d"] },
+        "confirm":    { "keys": ["return", "space"] },
+        "cancel":     { "keys": ["escape"] },
+        "skin_cycle": { "keys": ["home"] }
+    },
     "credits": [
         "Pocket Artemis",
         "",
