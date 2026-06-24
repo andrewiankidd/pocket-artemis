@@ -1,0 +1,32 @@
+{
+    "model": "models/artemis.glb",
+    "output": "sprites/artemis.png",
+    "frame_size": 128,
+    "camera": {
+        "fov": 30,
+        "angle": 15,
+        "distance": "auto",
+        "height": "auto"
+    },
+    "lighting": {
+        "ambient": 0.7,
+        "directional": 0.9,
+        "direction": [1, 1.5, 1]
+    },
+    "poses": [
+        { "name": "idle_happy" },
+        { "name": "idle_neutral", "rotation": [0, 10, 0] },
+        { "name": "idle_sad", "rotation": [5, 0, 0] },
+        { "name": "eating", "animation": "eat", "time": 0.5 },
+        { "name": "drinking", "animation": "drink", "time": 0.5 },
+        { "name": "playing", "animation": "play", "time": 0.3 },
+        { "name": "sleeping", "animation": "sleep", "time": 0.0 },
+        { "name": "sitting", "animation": "sit", "time": 0.0 },
+        { "name": "shaking", "animation": "shake", "time": 0.3 },
+        { "name": "spinning", "animation": "spin", "time": 0.5 },
+        { "name": "begging", "animation": "beg", "time": 0.5 },
+        { "name": "lying_down", "animation": "lie_down", "time": 0.0 },
+        { "name": "rolling", "animation": "roll_over", "time": 0.5 },
+        { "name": "bear", "animation": "bear", "time": 0.5 }
+    ]
+}

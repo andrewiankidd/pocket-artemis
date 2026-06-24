@@ -1,0 +1,83 @@
+name: Build and Deploy
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+permissions:
+  contents: write
+
+jobs:
+  ci:
+    uses: andrewiankidd/love2d4me/.github/workflows/love2d-ci.yml@main
+    with:
+      project_name: "Pocket Artemis"
+      love_filename: "pocket-artemis"
+      branch: "main"
+
+  upload_r2:
+    name: Upload to R2 ☁️
+    runs-on: ubuntu-latest
+    needs: ci
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Download Web artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Web-build
+          path: Web
+
+      - name: Download .love artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pocket-artemis-love
+          path: downloads
+
+      - name: Install wrangler
+        run: npm install -g wrangler@4
+
+      - name: Assemble R2 staging
+        run: |
+          mkdir -p r2-staging
+
+          # Site pages + config
+          cp -r .github/pages/* r2-staging/ 2>/dev/null || true
+          cp -r src/love2d4me/site/* r2-staging/ 2>/dev/null || true
+
+          # Web build
+          mv Web r2-staging/Web
+
+          # Docs + changelog
+          cp -r docs r2-staging/docs 2>/dev/null || true
+          cp CHANGELOG.md r2-staging/ 2>/dev/null || true
+
+          # Downloads
+          mkdir -p r2-staging/downloads
+          cp downloads/*.zip r2-staging/downloads/ 2>/dev/null || true
+
+          echo "Files to upload:"
+          find r2-staging -type f | wc -l
+
+      - name: Upload to R2
+        run: |
+          cd r2-staging
+          find . -type f | while IFS= read -r file; do
+            key="pocket-artemis/${file#./}"
+            echo "  $key"
+            wrangler r2 object put "${{ secrets.CLOUDFLARE_PROJECT_NAME }}/$key" --file "$file" --remote
+          done
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

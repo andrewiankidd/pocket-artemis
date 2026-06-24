@@ -1,0 +1,16 @@
+{
+  "name": "pocket-artemis",
+  "version": "0.1.0",
+  "description": "A simplified fake tamagotchi starring Artemis the Pomeranian-husky mix",
+  "lovefile": "pocket-artemis",
+  "scripts": {
+    "start": "node src/love2d4me/scripts/start.js",
+    "dev": "node src/love2d4me/scripts/dev.js",
+    "pack": "node src/love2d4me/scripts/pack-love.js",
+    "sprites": "node src/love2d4me/scripts/render-sprites.js src/game/sprites.json"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.10",
+    "chokidar": "^3.5.3"
+  }
+}

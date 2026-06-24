@@ -1,0 +1,32 @@
+{
+    "title": "Pocket Artemis",
+    "width": 320,
+    "height": 320,
+    "identity": "pocket-artemis",
+    "play_label": "Play",
+    "menu_main_logo": "game/pictures/icon.png",
+    "default_filter": { "min": "nearest", "mag": "nearest" },
+    "default_skin": "clean",
+    "platform_skins": {
+        "desktop": "clean",
+        "mobile": "gbc"
+    },
+    "orientation_skins": {
+        "portrait": "gbc",
+        "landscape": "gba"
+    },
+    "fps_limit": 30,
+    "credits": [
+        "Pocket Artemis",
+        "",
+        "A Tilted Cartridge game",
+        "",
+        "Built with love2d4me",
+        "Powered by LÖVE (love2d.org)",
+        "",
+        "Inspired by Artemis,",
+        "the goodest girl",
+        "",
+        "For Sian <3"
+    ]
+}
