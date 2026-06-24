@@ -13,13 +13,13 @@
     </style>
   </head>
   <body>
-    <canvas id="loadingCanvas" oncontextmenu="event.preventDefault()" width="320" height="320"></canvas>
-    <canvas id="canvas" oncontextmenu="event.preventDefault()" width="320" height="320"></canvas>
+    <canvas id="loadingCanvas" oncontextmenu="event.preventDefault()" width="640" height="480"></canvas>
+    <canvas id="canvas" oncontextmenu="event.preventDefault()" width="640" height="480"></canvas>
 
     <script>
     Object.defineProperty(window, 'devicePixelRatio', {value: 1, writable: false});
     (function() {
-        var W = 320, H = 320;
+        var W = 640, H = 480;
         var c = document.getElementById('canvas');
         Object.defineProperty(c, 'width', {
             get: function() { return W; },
@@ -114,7 +114,7 @@
 
     <script>
     (function() {
-        var W = 320, H = 320;
+        var W = 640, H = 480;
         function fitCanvas() {
             var c = document.getElementById('canvas');
             if (!c || c.style.visibility === 'hidden') return;
