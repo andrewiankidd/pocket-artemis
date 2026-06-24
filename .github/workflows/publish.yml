@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   ci:
-    uses: andrewiankidd/love2d4me/.github/workflows/love2d-ci.yml@main
+    uses: andrewiankidd/love2d4me/.github/workflows/love2d-ci.yml@master
     with:
       project_name: "Pocket Artemis"
       love_filename: "pocket-artemis"
