@@ -17,7 +17,7 @@ local MiniGame = require("game.minigame")
 local Pet = {}
 
 local lg = love.graphics
-local min, max, floor = math.min, math.max, math.floor
+local min, floor = math.min, math.floor
 
 -- ── String enums ──
 
