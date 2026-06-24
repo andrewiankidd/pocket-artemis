@@ -1,0 +1,40 @@
+{
+  "title": "Pocket Artemis",
+  "title_html": "Pocket <mark>Artemis</mark>",
+  "description": "A cosy tamagotchi game starring Artemis, a Pomeranian-husky mix. Feed her, play with her, teach her tricks.",
+  "description_html": "A cosy tamagotchi game starring Artemis, a Pomeranian-husky mix. Built with Lua and <a href=\"https://love2d.org\">LOVE2D</a>.",
+  "repo": "andrewiankidd/pocket-artemis",
+  "source": "https://github.com/andrewiankidd/pocket-artemis",
+  "theme": {
+    "background": "#2d1b4e",
+    "foreground": "rgba(45, 27, 78, 0.75)",
+    "highlight": "#c62e65",
+    "text": "#f0e8f5",
+    "muted": "#8a7a9a",
+    "card": "#3b2d6b",
+    "border": "#5a4a7a",
+    "wave-start": "#c62e65",
+    "wave-end": "#2d1b4e"
+  },
+  "downloads": [
+    {
+      "label": "Play in Browser",
+      "href": "Web/index.html",
+      "primary": true,
+      "icon": "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+    },
+    {
+      "label": ".love File",
+      "release_file": "pocket-artemis-love.zip",
+      "icon": "M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+    }
+  ],
+  "features": [
+    "<strong>Tamagotchi gameplay</strong> &mdash; feed, water, play, and rest to keep Artemis happy",
+    "<strong>Trick system</strong> &mdash; teach tricks like Sit, Spin, Bear and more",
+    "<strong>Handheld skins</strong> &mdash; retro handheld shells via <a href=\"https://github.com/andrewiankidd/love2d4me\">love2d4me</a>",
+    "<strong>Sprite animations</strong> &mdash; hand-drawn sprite sheet with per-animation frames",
+    "<strong>Offline decay</strong> &mdash; needs change while you're away, just like a real pet",
+    "<strong>Web build</strong> &mdash; plays in the browser via love.js (WASM)"
+  ]
+}
