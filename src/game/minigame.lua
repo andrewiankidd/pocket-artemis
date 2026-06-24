@@ -171,7 +171,7 @@ function MiniGame.draw()
                 local y1 = cy + math.sin(angle) * rad
                 local angle2 = angle + math.pi * 2 / 5
                 local x2 = cx + math.cos(angle2) * rad
-                local y2 = cy + math.sin(angle2) * r
+                local y2 = cy + math.sin(angle2) * rad
                 lg.polygon("fill", cx, cy, x1, y1, x2, y2)
             end
         else
